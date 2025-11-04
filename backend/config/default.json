@@ -1,0 +1,15 @@
+{
+    "app": {
+        "port": 3000,
+        "name": "Meetings Management API",
+        "secret": "MySecret",
+        "jwtSecret": "JwtSecret"
+    },
+    "db": {
+        "host": "localhost",
+        "port": 3306,
+        "username": "orriez",
+        "password": "1234",
+        "database": "meetings_management_orriez"
+    }
+}

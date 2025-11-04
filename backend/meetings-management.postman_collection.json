@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "meetings-mgmt-001",
+		"name": "Meetings Management API",
+		"description": "API endpoints for managing development teams and their meetings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Development Teams",
+			"item": [
+				{
+					"name": "Get All Development Teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/development-teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"development-teams"
+							]
+						},
+						"description": "Retrieves all development teams in the company"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meetings",
+			"item": [
+				{
+					"name": "Get Meetings by Team ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/meetings/team/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings",
+								"team",
+								"1"
+							]
+						},
+						"description": "Retrieves all meetings for a specific development team by team ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Meeting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-15T10:00:00Z\",\n    \"end_datetime\": \"2025-11-15T11:00:00Z\",\n    \"description\": \"Weekly sprint planning meeting to discuss upcoming tasks\",\n    \"room\": \"Large Board Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Creates a new meeting for a development team"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Meeting - Team Mobile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 2,\n    \"start_datetime\": \"2025-11-16T14:00:00Z\",\n    \"end_datetime\": \"2025-11-16T15:30:00Z\",\n    \"description\": \"Mobile app architecture review and performance optimization\",\n    \"room\": \"Blue Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Example: Create a meeting for Team Mobile"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Overlap - Exact Same Time (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T09:00:00Z\",\n    \"end_datetime\": \"2025-11-05T10:00:00Z\",\n    \"description\": \"This meeting overlaps exactly with existing meeting\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests overlap validation - tries to create meeting at exact same time as existing meeting for Team UI (should return 409 Conflict)"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Overlap - Starts During Existing (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T09:30:00Z\",\n    \"end_datetime\": \"2025-11-05T11:00:00Z\",\n    \"description\": \"This meeting starts during an existing meeting\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests overlap validation - meeting starts during existing meeting (should return 409 Conflict)"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Overlap - Ends During Existing (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T08:00:00Z\",\n    \"end_datetime\": \"2025-11-05T09:30:00Z\",\n    \"description\": \"This meeting ends during an existing meeting\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests overlap validation - meeting ends during existing meeting (should return 409 Conflict)"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Overlap - Contains Existing (Should Fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T08:00:00Z\",\n    \"end_datetime\": \"2025-11-05T11:00:00Z\",\n    \"description\": \"This meeting completely contains an existing meeting\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests overlap validation - meeting completely contains existing meeting (should return 409 Conflict)"
+					},
+					"response": []
+				},
+				{
+					"name": "Test No Overlap - Before Existing (Should Succeed)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T07:00:00Z\",\n    \"end_datetime\": \"2025-11-05T08:00:00Z\",\n    \"description\": \"This meeting is before any existing meetings\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests no overlap - meeting is completely before existing meeting (should succeed with 201)"
+					},
+					"response": []
+				},
+				{
+					"name": "Test No Overlap - After Existing (Should Succeed)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"development_team_id\": 1,\n    \"start_datetime\": \"2025-11-05T16:00:00Z\",\n    \"end_datetime\": \"2025-11-05T17:00:00Z\",\n    \"description\": \"This meeting is after all existing meetings\",\n    \"room\": \"Test Room\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/meetings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"meetings"
+							]
+						},
+						"description": "Tests no overlap - meeting is completely after existing meetings (should succeed with 201)"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

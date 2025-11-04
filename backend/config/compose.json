@@ -1,0 +1,8 @@
+{
+    "app": {
+        "name": "Meetings Management API (Docker)"
+    },
+    "db": {
+        "host": "database"
+    }
+}
